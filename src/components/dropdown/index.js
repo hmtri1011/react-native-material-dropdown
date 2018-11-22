@@ -463,7 +463,7 @@ export default class Dropdown extends PureComponent {
     return `${index}-${valueExtractor(item, index)}`
   }
 
-  renderBase(props) {
+  renderBase(props, textFieldProps) {
     let { value } = this.state
     let {
       data,
@@ -485,7 +485,10 @@ export default class Dropdown extends PureComponent {
     }
 
     if ('function' === typeof renderBase) {
-      return renderBase({ ...props, title, value, renderAccessory })
+      return renderBase(
+        { ...props, title, value, renderAccessory },
+        textFieldProps
+      )
     }
 
     title = null == title || 'string' === typeof title ? title : String(title)
@@ -501,14 +504,7 @@ export default class Dropdown extends PureComponent {
         editable={false}
         onChangeText={undefined}
         renderAccessory={renderAccessory}
-        inputContainerPadding={4}
-        textColor="rgb(0, 91, 73)"
-        fontSize={20}
-        baseColor="#707070"
-        lineWidth={1.5}
-        style={{
-          fontWeight: '700'
-        }}
+        {...textFieldProps}
       />
     )
   }
@@ -649,6 +645,7 @@ export default class Dropdown extends PureComponent {
       accessibilityLabel,
 
       supportedOrientations,
+      textFieldProps,
 
       ...props
     } = this.props
@@ -718,7 +715,7 @@ export default class Dropdown extends PureComponent {
       >
         <TouchableWithoutFeedback {...touchableProps}>
           <View pointerEvents="box-only">
-            {this.renderBase(props)}
+            {this.renderBase(props, textFieldProps)}
             {this.renderRipple()}
           </View>
         </TouchableWithoutFeedback>
